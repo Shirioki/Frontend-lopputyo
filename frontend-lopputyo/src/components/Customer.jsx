@@ -7,10 +7,12 @@ import "ag-grid-community/styles/ag-theme-material.css";
 export default function Customer() {
     const [customers, setCustomers] = useState([]);
 
-    const fetchData = () => {
+    useEffect(() => { getCustomers(); }, []);
+    
+    const getCustomers = () => {
         fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/customers')
             .then(response => response.json())
-            .then(data => {setCustomers(data)})
+            .then(data => {setCustomers(data._embedded.customers)})
             .catch(error => console.log(error));
     }
     const [columnDefs] = useState([
@@ -27,7 +29,7 @@ export default function Customer() {
         <>
         <div className="ag-theme-material" style={{width: 1280, height: 1000}}>
             <AgGridReact
-                rowData={products}
+                rowData={customers}
                 columnDefs={columnDefs}
                 pagination={true}
                 paginationPageSize={10}
