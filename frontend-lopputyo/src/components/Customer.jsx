@@ -85,7 +85,7 @@ export default function Customer() {
 
     return (
         <>
-        <h2 style={{color: 'black'}}>Customer list</h2>
+        <h2 >Customer list</h2>
         <AddCustomer saveCustomer={saveCustomer} />
         <div>
             <CSVLink data={CsvCustomer} filename={"customers.csv"}>Download CSV</CSVLink>

@@ -53,7 +53,7 @@ export default function AddTraining(props) {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button style={{ margin: 15, backgroundColor: '#007474' }} variant='contained' onClick={handleClickOpen}>Add Training</Button>
+            <Button style={{ margin: 15, backgroundColor: '#fffff' }} variant='contained' onClick={handleClickOpen}>Add Training</Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add Training</DialogTitle>
                 <DialogContent>
