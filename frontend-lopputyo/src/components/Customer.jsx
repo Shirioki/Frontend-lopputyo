@@ -3,7 +3,8 @@ import {AgGridReact} from "ag-grid-react";
 import {Button} from "@mui/material";
 import AddCustomer from './AddCustomer';
 import EditCustomer from './EditCustomer';
-import AddTraining from './AddTraining';
+import { CSVLink } from "react-csv";
+
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -58,18 +59,15 @@ export default function Customer() {
             .catch(error => console.error(error));
     }
 
-    const saveTrainingToCustomer = (customerLink, training) => {
-        let CustomerTraining = { ...training, customer: customerLink };
-        fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(CustomerTraining)
-        })
-            .then(response => fetchData())
-            .catch(error => console.error(error));
-    }
+    const CsvCustomer = customers ? customers.map((customer) => ({
+        FirstName: customer.firstname,
+        LastName: customer.lastname,
+        Address: customer.streetaddress,
+        Postcode: customer.postcode,
+        City: customer.city,
+        Email: customer.email,
+        Phone: customer.phone
+    })) : [];
 
     const [columnDefs] = useState([
         {field: 'firstname', sortable: true, filter: true},
@@ -79,15 +77,19 @@ export default function Customer() {
         {field: 'city', sortable: true, filter: true},
         {field: 'email', sortable: true, filter: true},
         {field: 'phone', sortable: true, filter: true},
-        {cellRenderer: (params) => <AddTraining saveTraining={saveTrainingToCustomer} params={params} />, },
         {cellRenderer: (params) => <EditCustomer updateCustomer={updateCustomer} params={params} />, },
         {cellRenderer: (params) => <Button size="small" color="error" onClick={() => deleteCustomer(params)}>Delete</Button>, width: 120}
     ]);
 
+    
+
     return (
         <>
-        <h2>Customer list</h2>
+        <h2 style={{color: 'black'}}>Customer list</h2>
         <AddCustomer saveCustomer={saveCustomer} />
+        <div>
+            <CSVLink data={CsvCustomer} filename={"customers.csv"}>Download CSV</CSVLink>
+        </div>
         <div className="ag-theme-material" style={{width: 1280, height: 1000}}>
             <AgGridReact
                 rowData={customers}

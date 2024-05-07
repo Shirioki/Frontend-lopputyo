@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { AgGridReact } from "ag-grid-react";
 import { Button } from "@mui/material";
+import AddTraining from './AddTraining';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -64,6 +65,27 @@ export default function TrainingList() {
         }
     };
 
+    const addTraining = (training, customerId) => {
+        training.customer = customerId;
+        fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings', {
+            method: "POST", headers: {
+                'Content-type': 'application/json'
+            }, body: JSON.stringify(training)
+        })
+            .then(response => {
+                if (response.ok) {
+                    setOpenSnackbar(true);
+                    fetchTrainings();
+                } else {
+                    setOpenSnackbar(true);
+                }
+            })
+            .catch(error => {
+                console.error("Error adding customer:", error);
+                setOpenSnackbar(true);
+            });
+    };
+
     const columnDefs = [
         {
             field: 'date',
@@ -89,7 +111,8 @@ export default function TrainingList() {
 
     return (
         <>
-            <h2>Training list</h2>
+        <div className="ag-theme-material" style={{ width: 1650, height: 750, margin: "auto" }}>
+            <AddTraining addTraining={addTraining} />            <h2>Training list</h2>
             <div className="ag-theme-material" style={{ width: 1280, height: 1000 }}>
                 <AgGridReact
                     rowData={trainings}
@@ -98,6 +121,7 @@ export default function TrainingList() {
                     paginationPageSize={10}
                 />
             </div>
+        </div>
         </>
     );
 }
