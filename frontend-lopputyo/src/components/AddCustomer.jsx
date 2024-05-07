@@ -9,7 +9,7 @@ import { DialogTitle } from '@mui/material';
 export default function AddCustomer(props) {
     const [open, setOpen] = React.useState(false);
     const [customer, setCustomer] = React.useState({
-        firstname: '', lastname: '', email: '', streetaddress: ''
+        firstname: '', lastname: '', email: '', streetaddress: '', postcode: '', city: '', phone: ''
     })
 
     const handleClickOpen = () => {
@@ -67,6 +67,30 @@ export default function AddCustomer(props) {
                         name="streetaddress"
                         value={customer.streetaddress}
                         label="Street Address"
+                        fullWidth
+                        onChange={e => handleInputChange(e)}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="postcode"
+                        value={customer.postcode}
+                        label="Postcode"
+                        fullWidth
+                        onChange={e => handleInputChange(e)}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="city"
+                        value={customer.city}
+                        label="City"
+                        fullWidth
+                        onChange={e => handleInputChange(e)}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="phone"
+                        value={customer.phone}
+                        label="Phone"
                         fullWidth
                         onChange={e => handleInputChange(e)}
                     />

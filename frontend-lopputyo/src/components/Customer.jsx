@@ -79,8 +79,8 @@ export default function Customer() {
         {field: 'city', sortable: true, filter: true},
         {field: 'email', sortable: true, filter: true},
         {field: 'phone', sortable: true, filter: true},
-        { cellRenderer: (params) => <AddTraining saveTraining={saveTrainingToCustomer} params={params} />, },
-        { cellRenderer: (params) => <EditCustomer updateCustomer={updateCustomer} params={params} />, },
+        {cellRenderer: (params) => <AddTraining saveTraining={saveTrainingToCustomer} params={params} />, },
+        {cellRenderer: (params) => <EditCustomer updateCustomer={updateCustomer} params={params} />, },
         {cellRenderer: (params) => <Button size="small" color="error" onClick={() => deleteCustomer(params)}>Delete</Button>, width: 120}
     ]);
 
