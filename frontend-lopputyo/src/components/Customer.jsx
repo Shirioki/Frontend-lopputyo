@@ -7,9 +7,9 @@ import "ag-grid-community/styles/ag-theme-material.css";
 export default function Customer() {
     const [customers, setCustomers] = useState([]);
 
-    useEffect(() => { getCustomers(); }, []);
+    useEffect(() => { fetchData(); }, []);
     
-    const getCustomers = () => {
+    const fetchData = () => {
         fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/customers')
             .then(response => response.json())
             .then(data => {setCustomers(data._embedded.customers)})
