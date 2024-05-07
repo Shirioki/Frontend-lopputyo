@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {AgGridReact} from "ag-grid-react";
 import {Button} from "@mui/material";
+import AddCustomer from './AddCustomer';
+import EditCustomer from './EditCustomer';
+import AddTraining from './AddTraining';
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -30,7 +33,44 @@ export default function Customer() {
                 .catch(error => console.error(error));
         }
     }
-    
+
+    const saveCustomer = (newCustomer) => {
+        fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/customers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newCustomer)
+        })
+            .then(response => fetchData())
+            .catch(error => console.error(error));
+    }
+
+    const updateCustomer = (link, customer) => {
+        fetch(link, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(customer)
+        })
+            .then(response => fetchData())
+            .catch(error => console.error(error));
+    }
+
+    const saveTrainingToCustomer = (customerLink, training) => {
+        let CustomerTraining = { ...training, customer: customerLink };
+        fetch('https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(CustomerTraining)
+        })
+            .then(response => fetchData())
+            .catch(error => console.error(error));
+    }
+
     const [columnDefs] = useState([
         {field: 'firstname', sortable: true, filter: true},
         {field: 'lastname', sortable: true, filter: true},
@@ -39,11 +79,15 @@ export default function Customer() {
         {field: 'city', sortable: true, filter: true},
         {field: 'email', sortable: true, filter: true},
         {field: 'phone', sortable: true, filter: true},
+        { cellRenderer: (params) => <AddTraining saveTraining={saveTrainingToCustomer} params={params} />, },
+        { cellRenderer: (params) => <EditCustomer updateCustomer={updateCustomer} params={params} />, },
         {cellRenderer: (params) => <Button size="small" color="error" onClick={() => deleteCustomer(params)}>Delete</Button>, width: 120}
     ]);
 
     return (
         <>
+        <h2>Customer list</h2>
+        <AddCustomer saveCustomer={saveCustomer} />
         <div className="ag-theme-material" style={{width: 1280, height: 1000}}>
             <AgGridReact
                 rowData={customers}
